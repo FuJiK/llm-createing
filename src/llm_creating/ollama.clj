@@ -3,9 +3,9 @@
   (:require [cheshire.core :as json]
             [clojure.string :as str])
   (:import [java.net URI]
-           [java.net.http HttpClient HttpRequest HttpResponse]
-           [java.time Duration]
-           [java.nio.charset StandardCharsets]))
+           [java.net.http HttpClient HttpRequest HttpResponse
+            HttpRequest$BodyPublishers HttpResponse$BodyHandlers]
+           [java.time Duration]))
 
 (defn- uri [base-url path]
   (URI/create (str (str/replace base-url #"/$" "") path)))
@@ -13,18 +13,18 @@
 (defn- request
   [{:keys [base-url method path body timeout-ms]}]
   (let [client (.build (HttpClient/newBuilder))
-        builder (HttpRequest/newBuilder
-                 (.uri (uri base-url path))
-                 (.timeout (Duration/ofMillis timeout-ms))
-                 (.header "Content-Type" "application/json")
-                 (.header "Accept" "application/json"))
+        builder (-> (HttpRequest/newBuilder)
+                    (.uri (uri base-url path))
+                    (.timeout (Duration/ofMillis timeout-ms))
+                    (.header "Content-Type" "application/json")
+                    (.header "Accept" "application/json"))
         req (if body
-              (.POST builder
-                     (HttpRequest/BodyPublishers/ofString
-                      (json/generate-string body)
-                      StandardCharsets/UTF_8))
-              (.GET builder))
-        resp (.send client req (HttpResponse/BodyHandlers/ofString))]
+              (-> builder
+                  (.POST (HttpRequest$BodyPublishers/ofString
+                          (json/generate-string body)))
+                  (.build))
+              (-> builder (.GET) (.build)))
+        resp (.send client req (HttpResponse$BodyHandlers/ofString))]
     {:status (.statusCode resp)
      :body (.body resp)}))
 
