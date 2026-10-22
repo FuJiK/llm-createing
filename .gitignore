@@ -3,3 +3,5 @@
 /.lsp/
 /.env
 /target/
+/web/**/bin/
+/web/**/obj/

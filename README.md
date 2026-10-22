@@ -7,7 +7,8 @@ Docker で **Ollama** を動かし、**Clojure** からローカル LLM を起�
 ## 前提
 
 - [Docker](https://docs.docker.com/get-docker/)（Compose v2）
-- [Clojure CLI](https://clojure.org/guides/install_clojure)（Java 17+）
+- [Clojure CLI](https://clojure.org/guides/install_clojure)（Java 17+）— LLM スタック管理用
+- [.NET 8 SDK](https://dotnet.microsoft.com/download) — Web UI 用（任意）
 
 ## クイックスタート
 
@@ -50,6 +51,30 @@ clj -M:run down
 - `OLLAMA_BASE_URL` — API（既定: `http://localhost:11434`）
 - `OLLAMA_DEFAULT_MODEL` — 既定モデル（例: `llama3.2:1b`）
 - `OLLAMA_HOST_PORT` — ホスト側ポート
+
+## C# Web アプリ（ローカル UI + バックエンド）
+
+ブラウザでチャットし、ASP.NET Core が **Ollama** にプロキシします。
+
+```bash
+# 1. Ollama を起動（上記クイックスタート）
+clojure -M:run up
+clojure -M:run pull llama3.2:1b
+
+# 2. Web アプリ
+cd web/LlmCreating.Web
+dotnet run
+```
+
+ブラウザで `http://localhost:5236` を開きます（`Properties/launchSettings.json` の URL）。
+
+| エンドポイント | 説明 |
+|----------------|------|
+| `GET /` | チャット UI |
+| `GET /api/health` | Ollama 疎通 |
+| `POST /api/chat` | `{ "prompt": "..." }` または `{ "messages": [...] }` |
+
+`appsettings.json` の `Ollama:BaseUrl` / `DefaultModel` で接続先を変更できます。
 
 ## REPL から使う例
 
