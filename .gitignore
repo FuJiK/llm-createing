@@ -1,0 +1,5 @@
+/.cpcache/
+/.clj-kondo/
+/.lsp/
+/.env
+/target/
