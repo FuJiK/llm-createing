@@ -61,12 +61,18 @@ clj -M:run down
 clojure -M:run up
 clojure -M:run pull llama3.2:1b
 
-# 2. Web アプリ
+# 2. .NET SDK（初回のみ — dotnet-host だけでは動きません）
+chmod +x scripts/install-dotnet-linux.sh
+./scripts/install-dotnet-linux.sh 8
+
+# 3. Web アプリ
 cd web/LlmCreating.Web
 dotnet run
 ```
 
 ブラウザで `http://localhost:5236` を開きます（`Properties/launchSettings.json` の URL）。
+
+`Error: [/usr/lib/dotnet/host/fxr] does not exist` が出たら → [web/LlmCreating.Web/README.md](web/LlmCreating.Web/README.md) を参照。
 
 | エンドポイント | 説明 |
 |----------------|------|
