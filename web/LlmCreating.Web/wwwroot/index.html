@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LLM Creating — Local Chat</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="layout">
+    <header>
+      <h1>ローカル LLM チャット</h1>
+      <p class="sub">C# バックエンド → Ollama（Docker）</p>
+      <p id="health" class="health">接続確認中…</p>
+    </header>
+
+    <section id="messages" class="messages" aria-live="polite"></section>
+
+    <form id="chat-form" class="composer">
+      <textarea id="prompt" rows="3" placeholder="質問を入力…" required></textarea>
+      <div class="actions">
+        <button type="submit" id="send">送信</button>
+      </div>
+    </form>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
