@@ -1,0 +1,4 @@
+{:ollama {:base-url "http://localhost:11434"
+          :default-model "llama3.2:1b"
+          :request-timeout-ms 300000}
+ :docker {:compose-file "docker-compose.yml"}}
